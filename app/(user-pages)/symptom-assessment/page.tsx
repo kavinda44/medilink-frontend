@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react"; // Added FormEvent here
 
 import Navbar from "@/components/user-pages/Navbar";
 import axiosInstance from "@/lib/axios";
@@ -18,7 +18,8 @@ const SymptomAssessmentPage = () => {
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [confidence, setConfidence] = useState<number | null>(null);
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  // Changed React.SubmitEvent to FormEvent
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -46,7 +47,8 @@ const SymptomAssessmentPage = () => {
       setPrediction(predictedDisease || "");
       setSymptoms(Array.isArray(matchedSymptoms) ? matchedSymptoms : []);
       setConfidence(typeof confidence === "number" ? confidence : null);
-    } catch {
+    } catch (error) {
+      console.error("Error fetching symptom assessment:", error); // Added basic error logging
     } finally {
       setIsLoading(false);
     }
